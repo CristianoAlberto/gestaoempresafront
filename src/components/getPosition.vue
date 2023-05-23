@@ -3,36 +3,38 @@
     <div class="container-fluid">
         <div class="content_top">
             <div>
-                <h1>Lista usuários</h1>
+                <h1>Lista cargos</h1>
             </div>
             <div class="">
                 <div>
-                    <router-link class="btn btn-outline-secondary mb-2" to="/createUser">Cadastrar
-                        usuário</router-link>
+                    <router-link class="btn btn-outline-secondary mb-2" to="/createPosition">Cadastrar
+                        cargo</router-link>
                 </div>
             </div>
             <table class="table table-striped table-dark">
                 <thead style="text-align: center;">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Foto</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Número</th>
+                        <th scope="col">Nome do cargo</th>
+                        <th scope="col">Salário</th>
+                        <th scope="col">Subsídio</th>
+                        <th scope="col">Salário líquido</th>
                         <th scope="col">Actualizar</th>
                         <th scope="col">Eliminar</th>
+
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
                     <tr>
                         <th scope="row">1</th>
-                        <td><img src="../assets/chirs.jpg" class="picture" /></td>
-                        <td>Chris Alberto</td>
-                        <td>chrisalberto@gmail.com</td>
-                        <td>945213730</td>
+                        <td>CEO</td>
+                        <td>50000</td>
+                        <td>100000</td>
+                        <td>70000</td>
                         <td><i class='bx bx-refresh btn btn-info'></i></td>
                         <td><i class='bx bxs-trash btn btn-danger'></i></td>
                     </tr>
+
                 </tbody>
             </table>
         </div>
@@ -43,7 +45,7 @@
 import sidebar from "./sidebar.vue";
 export default {
 
-    name: 'getUser',
+    name: 'getPosition',
     components: {
         sidebar
     }
@@ -59,7 +61,12 @@ th {
     border: 1px solid rgb(165, 174, 180);
 }
 
-
+.picture {
+    height: 45px;
+    width: 45px;
+    object-fit: cover;
+    border-radius: 12px;
+}
 
 label {
     margin: 7px;
@@ -75,13 +82,6 @@ label {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin: 50px;
     margin-left: 150px;
-}
-
-.picture {
-    height: 45px;
-    width: 45px;
-    object-fit: cover;
-    border-radius: 12px;
 }
 
 h1 {

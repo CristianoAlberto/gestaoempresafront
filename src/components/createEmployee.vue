@@ -58,7 +58,7 @@
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-outline-success btn-lg mt-2">Cadastrar</button>
-                        <button type="button" class="btn btn-outline-danger btn-lg mt-2">Voltar</button>
+                        <router-link class="form-control btn btn-outline-danger btn-lg" to="/employee">Voltar</router-link>
                     </div>
                 </form>
             </div>

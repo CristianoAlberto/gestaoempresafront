@@ -26,36 +26,36 @@
                 <span class="tooltips">Dashboard</span>
             </li>
             <li>
-                <a href="../views/CreateUserView.vue">
+                <router-link to="/user">
                     <img class="ia" width="20" height="20" src="https://img.icons8.com/stickers/20/user-skin-type-2.png"
                         alt="user-skin-type-2" />
                     <span class="links_name"> User</span>
-                </a>
+                </router-link>
                 <span class="tooltips">User</span>
             </li>
             <li>
-                <a href="">
+                <router-link to="/departament">
                     <img class="ia" width="20" height="20"
                         src="https://img.icons8.com/fluency/48/organization-chart-people.png"
                         alt="organization-chart-people" />
                     <span class="links_name"> Departaments</span>
-                </a>
+                </router-link>
                 <span class="tooltips">Departaments</span>
             </li>
             <li>
-                <a href="#">
+                <router-link to="/position">
                     <img class="ia" width="20" height="20" src="https://img.icons8.com/plasticine/20/briefcase.png"
                         alt="briefcase" />
                     <span class="links_name"> Positions</span>
-                </a>
+                </router-link>
                 <span class="tooltips">Positions</span>
             </li>
             <li>
-                <a href="#">
+                <router-link to="/employee">
                     <img class="ia" width="20" height="20" src="https://img.icons8.com/color/20/men-age-group-5.png"
                         alt="men-age-group-5" />
                     <span class="links_name"> Employee</span>
-                </a>
+                </router-link>
                 <span class="tooltips">Employee</span>
             </li>
         </ul>

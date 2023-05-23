@@ -6,7 +6,12 @@
     <!-- <createEmployee /> -->
     <!-- <createDepartament /> -->
     <!-- <createPosition /> -->
-    <getUser />
+    <!-- <getUser /> -->
+    <!-- <getEmployee /> -->
+    <!-- <getPosition /> -->
+    <!-- <getDepartament /> -->
+    <router-view />
+    <!-- <homeComp /> -->
   </div>
 </template>
 <script>
@@ -17,11 +22,17 @@ import createEmployee from './components/createEmployee.vue'
 import createDepartament from './components/createDepartament.vue'
 import createPosition from './components/createPosition.vue'
 import getUser from './components/getUser.vue'
+import getEmployee from './components/getEmployee.vue'
+import getPosition from './components/getPosition.vue'
+import getDepartament from './components/getDepartament.vue'
+import { RouterView } from 'vue-router'
+import homeComp from './components/homeComp.vue'
 
 export default {
   name: 'App',
   components: {
-    getUser
+    RouterView
+
   }
 }
 </script>

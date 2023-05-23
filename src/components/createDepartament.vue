@@ -19,7 +19,8 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <button type="button" class="form-control btn btn-outline-danger btn-lg">Voltar</button>
+                            <router-link class="form-control btn btn-outline-danger btn-lg"
+                                to="/departament">Voltar</router-link>
                         </div>
                         <div class="col-md-6">
                             <button type="submit" class="form-control btn btn-outline-success btn-lg">Cadastrar</button>
