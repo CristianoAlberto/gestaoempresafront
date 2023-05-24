@@ -8,6 +8,7 @@ export default {
     name: "position",
     components: {
         getPosition
-    }
+    },
+
 }
 </script>

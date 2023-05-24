@@ -25,16 +25,15 @@
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>CEO</td>
-                        <td>50000</td>
-                        <td>100000</td>
-                        <td>70000</td>
+                    <tr v-for="(item, i) in items" :key="i">
+                        <th>{{ i + 1 }}</th>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.base_salary }}</td>
+                        <td>{{ item.subsidy }}</td>
+                        <td>{{ item.net_salary }}</td>
                         <td><i class='bx bx-refresh btn btn-info'></i></td>
                         <td><i class='bx bxs-trash btn btn-danger'></i></td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
@@ -48,7 +47,27 @@ export default {
     name: 'getPosition',
     components: {
         sidebar
-    }
+    },
+    data() {
+        return {
+            items: [],
+        };
+    },
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        async fetchData() {
+            await this.$axios.get('/position/positionGet')
+                .then(response => {
+                    this.items = response.data;
+                    console.log(this.items)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+    },
 }
 </script>
 
