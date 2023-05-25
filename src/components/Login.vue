@@ -1,16 +1,16 @@
 <template>
     <div class="body">
         <div class="card">
-            <form>
+            <form @submit.prevent="login()">
                 <div>
                     <h1>Iniciar sessão</h1>
                 </div>
                 <div class="input-box">
-                    <input type="text" name="email" id="email" required />
+                    <input type="text" name="email" id="email" required v-model="data.email" />
                     <label>Email</label>
                 </div>
                 <div class="input-box">
-                    <input type="password" name="password" id="password" required />
+                    <input type="password" name="password" id="password" required v-model="data.password" />
                     <label>Senha</label>
                 </div>
                 <button type="submit" class="btn">Entrar</button>
@@ -23,7 +23,36 @@
 <script>
 
 export default {
-    name: 'Login'
+    name: 'Login',
+    data() {
+        return {
+            data: {
+                email: "",
+                password: "",
+            },
+        }
+    },
+
+    methods: {
+        async login() {
+            try {
+                const response = await this.$axios.post('/authUser/userSignUp', {
+                    email: this.data.email,
+                    password: this.data.password,
+                });
+
+                const token = response.data.token.token
+
+                await localStorage.setItem("token", token)
+                if (response) {
+                    this.$router.push('/');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+
 }
 </script>
 

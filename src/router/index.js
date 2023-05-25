@@ -1,13 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import home from '../views/Home.vue'
-import position from '../views/GetPosition.vue'
-import departament from '../views/GetDepartament.vue'
-import user from '../views/GetUser.vue'
-import employee from '../views/GetEmployee.vue'
-import CreateDepartament from '../views/CreateDepartament.vue'
-import CreateEmployee from '../views/CreateEmployee.vue'
-import CreateUser from '../views/CreateUser.vue'
-import CreatePosition from '../views/CreatePosition.vue'
+import position from '../components/getPosition.vue'
+import departament from '@/components/getDepartament.vue'
+import user from '@/components/getUser.vue'
+import employee from '@/components/getEmployee.vue'
+import createDepartament from '@/components/createDepartament.vue'
+import createEmployee from '@/components/createEmployee.vue'
+import createUser from '@/components/createUser.vue'
+import createPosition from '@/components/createPosition.vue'
+import login from '@/components/Login.vue'
 
 const routes = [
     {
@@ -37,24 +38,29 @@ const routes = [
     },
     {
         path: '/createDepartament',
-        name: 'CreateDepartament',
-        component: CreateDepartament
+        name: 'createDepartament',
+        component: createDepartament
     },
     {
         path: '/createEmployee',
-        name: 'CreateEmployee',
-        component: CreateEmployee
+        name: 'createPosition',
+        component: createEmployee
     },
     {
         path: '/createUser',
-        name: 'CreateUser',
-        component: CreateUser
+        name: 'createUser',
+        component: createUser
     },
     {
         path: '/createPosition',
-        name: 'CreatePosition',
-        component: CreatePosition
+        name: 'createPosition',
+        component: createPosition
     },
+    {
+        path: '/login',
+        name: 'login',
+        component: login
+    }
 ]
 
 const router = createRouter({

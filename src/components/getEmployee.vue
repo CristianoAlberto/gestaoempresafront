@@ -27,19 +27,18 @@
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
-                    <tr>
-                        <th scope="row">1</th>
-                        <td> <img src="../assets/chirs.jpg" class="picture" /></td>
-                        <td>Chris Alberto</td>
-                        <td>Samba, Luanda</td>
-                        <td>945213730</td>
-                        <td>chrisalberto@gmail.com</td>
-                        <td>CEO</td>
-                        <td>Administrativo</td>
-                        <td><i class='bx bx-refresh btn btn-info'></i></td>
-                        <td><i class='bx bxs-trash btn btn-danger'></i></td>
+                    <tr v-for="(item, i) in  items " :key="i">
+                        <th>{{ i + 1 }}</th>
+                        <td><img :src="`../`" /></td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.adress }}</td>
+                        <td>{{ item.number }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.positionId }}</td>
+                        <td>{{ item.departamentId }}</td>
+                        <td><i :value=item.employeeId class='bx bx-refresh btn btn-info'></i></td>
+                        <td><i :value=item.employeeId class='bx bxs-trash btn btn-danger'></i></td>
                     </tr>
-
                 </tbody>
             </table>
         </div>
@@ -53,7 +52,32 @@ export default {
     name: 'getEmployee',
     components: {
         sidebar
-    }
+    },
+
+    data() {
+        return {
+            items: [],
+        };
+    },
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        async fetchData() {
+
+            const config = {
+                headers: { 'x-acess-token': localStorage.getItem('token') }
+            }
+            await this.$axios.get('/employee/employeeGet', config)
+                .then(response => {
+                    this.items = response.data;
+                    console.log(this.items)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+    },
 }
 </script>
 

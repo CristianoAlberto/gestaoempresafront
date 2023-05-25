@@ -22,12 +22,12 @@
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Recursos humanos</td>
-                        <td>RH</td>
-                        <td><i class='bx bx-refresh btn btn-info'></i></td>
-                        <td><i class='bx bxs-trash btn btn-danger'></i></td>
+                    <tr v-for="(item, i) in  items " :key="i">
+                        <th>{{ i + 1 }}</th>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.acronym }}</td>
+                        <td><i :value=item.departamentId class='bx bx-refresh btn btn-info'></i></td>
+                        <td><i :value=item.departamentId class='bx bxs-trash btn btn-danger'></i></td>
                     </tr>
 
                 </tbody>
@@ -43,7 +43,32 @@ export default {
     name: 'getDepartament',
     components: {
         sidebar
-    }
+    },
+    data() {
+        return {
+            items: []
+        }
+    },
+    mounted() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+
+            const config = {
+                headers: { 'x-acess-token': localStorage.getItem('token') }
+            }
+            await this.$axios.get('/departament/departamentGet', config)
+                .then(response => {
+                    this.items = response.data;
+                    console.log(this.items)
+                    console.log('ola')
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+    },
 }
 </script>
 

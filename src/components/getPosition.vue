@@ -25,14 +25,14 @@
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
-                    <tr v-for="(item, i) in items" :key="i">
+                    <tr v-for="(item, i) in  items " :key="i">
                         <th>{{ i + 1 }}</th>
                         <td>{{ item.name }}</td>
                         <td>{{ item.base_salary }}</td>
                         <td>{{ item.subsidy }}</td>
                         <td>{{ item.net_salary }}</td>
-                        <td><i class='bx bx-refresh btn btn-info'></i></td>
-                        <td><i class='bx bxs-trash btn btn-danger'></i></td>
+                        <td><i :value=item.positionId class='bx bx-refresh btn btn-info'></i></td>
+                        <td><i :value=item.positionId class='bx bxs-trash btn btn-danger'></i></td>
                     </tr>
                 </tbody>
             </table>
@@ -53,12 +53,18 @@ export default {
             items: [],
         };
     },
+
     mounted() {
         this.fetchData();
     },
     methods: {
         async fetchData() {
-            await this.$axios.get('/position/positionGet')
+
+            const config = {
+                headers: { 'x-acess-token': localStorage.getItem('token') }
+            }
+
+            await this.$axios.get('/position/positionGet', config)
                 .then(response => {
                     this.items = response.data;
                     console.log(this.items)

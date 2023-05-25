@@ -72,18 +72,34 @@
                         </div>
                     </div>
                 </div>
-                <i class='bx bx-log-out' id="log_out"></i>
+                <router-link @click="Off" to="/login">
+                    <i class='bx bx-log-out' id="log_out"></i>
+                </router-link>
             </div>
         </div>
     </div>
 </template>
 
 
+
 <script>
 
 export default {
     name: 'sidebar',
-    components: {}
+    components: {},
+
+    mounted() {
+        const token = localStorage.getItem("token")
+
+        if (!token) {
+            this.$router.push("/login")
+        }
+    },
+    methods: {
+        async Off() {
+            await localStorage.clear('token')
+        }
+    }
 }
 
 

@@ -24,14 +24,14 @@
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
-                    <tr>
-                        <th scope="row">1</th>
+                    <tr v-for="(item, i) in items" :key="i">
+                        <th>{{ i + 1 }}</th>
                         <td><img src="../assets/chirs.jpg" class="picture" /></td>
-                        <td>Chris Alberto</td>
-                        <td>chrisalberto@gmail.com</td>
-                        <td>945213730</td>
-                        <td><i class='bx bx-refresh btn btn-info'></i></td>
-                        <td><i class='bx bxs-trash btn btn-danger'></i></td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.number }}</td>
+                        <td><i :value=item.userId class='bx bx-refresh btn btn-info'></i></td>
+                        <td><i :value=item.userId class='bx bxs-trash btn btn-danger'></i></td>
                     </tr>
                 </tbody>
             </table>
@@ -46,7 +46,31 @@ export default {
     name: 'getUser',
     components: {
         sidebar
-    }
+    },
+    data() {
+        return {
+            items: []
+        }
+    },
+    mounted() {
+        this.fetchData()
+    },
+    methods: {
+        async fetchData() {
+
+            const config = {
+                headers: { 'x-acess-token': localStorage.getItem('token') }
+            }
+            await this.$axios.get('/user/userGet', config)
+                .then(response => {
+                    this.items = response.data;
+                    console.log(this.items)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+    },
 }
 </script>
 

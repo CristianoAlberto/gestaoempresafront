@@ -8,6 +8,15 @@ export default {
     name: "home",
     components: {
         homeComp
+    },
+
+    mounted() {
+
+        const token = localStorage.getItem("token")
+
+        if (!token) {
+            this.$router.push("/login")
+        }
     }
 }
 </script>
