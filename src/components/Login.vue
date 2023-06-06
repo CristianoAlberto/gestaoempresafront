@@ -32,23 +32,37 @@ export default {
             },
         }
     },
+    mounted() {
+        const token = localStorage.getItem("token")
 
+        if (token) {
+            this.$router.push("/")
+        }
+    },
     methods: {
         async login() {
             try {
+
                 const response = await this.$axios.post('/authUser/userSignUp', {
                     email: this.data.email,
                     password: this.data.password,
                 });
 
                 const token = response.data.token.token
+                const id = response.data.usuario.id
+                const userName = response.data.usuario.nome
+                const picture = response.data.usuario.picture
 
                 await localStorage.setItem("token", token)
+                await localStorage.setItem("id", id)
+                await localStorage.setItem("userName", userName)
+                await localStorage.setItem("userPicture", picture)
                 if (response) {
                     this.$router.push('/');
                 }
             } catch (error) {
                 console.error(error);
+                this.$toast.error('Email ou senha errada!!Tente novamente')
             }
         }
     }
@@ -60,7 +74,7 @@ export default {
 .body {
     padding: 0;
     margin: 0;
-    background: url('../assets/28963.webp') no-repeat;
+    background: url('../assets/img.jpg');
     width: 100%;
     height: 100%;
     top: 0;

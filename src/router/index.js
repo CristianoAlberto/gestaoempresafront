@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import home from '../views/Home.vue'
-import position from '../components/getPosition.vue'
+import home from '@/views/Home.vue'
+import position from '@/components/getPosition.vue'
 import departament from '@/components/getDepartament.vue'
 import user from '@/components/getUser.vue'
 import employee from '@/components/getEmployee.vue'
@@ -43,7 +43,7 @@ const routes = [
     },
     {
         path: '/createEmployee',
-        name: 'createPosition',
+        name: 'createEmployee',
         component: createEmployee
     },
     {
@@ -65,7 +65,7 @@ const routes = [
 
 const router = createRouter({
     history: createWebHashHistory(),
-    routes
-})
+    routes,
+});
 
 export default router

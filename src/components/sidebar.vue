@@ -1,71 +1,54 @@
 <template>
+    <navbar />
     <div class="sidebar">
         <div class="logo_content">
             <div class="logo">
-                <img class="ia" width="40" height="40"
-                    src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/external-enterprise-mobile-app-development-flaticons-lineal-color-flat-icons-3.png"
-                    alt="external-enterprise-mobile-app-development-flaticons-lineal-color-flat-icons-3" />
-                <div class="logo_name">Empresa_API</div>
+
+                <div class="logo_name">SANTÓME-TECNOLOGY</div>
             </div>
-            <i class='bx bx-menu' id="btn"></i>
+
         </div>
         <ul class="nav_list">
             <li>
-                <a href="#">
-                    <i class='bx bx-search' id="s"></i>
-                    <input type="text" placeholder="Search..." />
+                <a href="/">
+                    <span class="mdi mdi-home-circle links_name"> Home</span>
                 </a>
-                <span class="tooltips">Search...</span>
+                <span class="tooltips">Home</span>
             </li>
             <li>
-                <a href="#">
-                    <img class="ia" width="20" height="20" src="https://img.icons8.com/dusk/20/dashboard.png"
-                        alt="dashboard" />
-                    <span class="links_name"> Dashboard</span>
-                </a>
-                <span class="tooltips">Dashboard</span>
-            </li>
-            <li>
-                <router-link to="/user">
-                    <img class="ia" width="20" height="20" src="https://img.icons8.com/stickers/20/user-skin-type-2.png"
-                        alt="user-skin-type-2" />
-                    <span class="links_name"> User</span>
+                <router-link to="user">
+                    <span class="mdi mdi-account-circle links_name"> Usuários</span>
                 </router-link>
-                <span class="tooltips">User</span>
+                <span class="tooltips">Usuários</span>
             </li>
             <li>
                 <router-link to="/departament">
-                    <img class="ia" width="20" height="20"
-                        src="https://img.icons8.com/fluency/48/organization-chart-people.png"
-                        alt="organization-chart-people" />
-                    <span class="links_name"> Departaments</span>
+                    <span class="mdi mdi-account-group-outline links_name"> Departamentos</span>
                 </router-link>
-                <span class="tooltips">Departaments</span>
+                <span class="tooltips">Departamentos</span>
             </li>
             <li>
                 <router-link to="/position">
-                    <img class="ia" width="20" height="20" src="https://img.icons8.com/plasticine/20/briefcase.png"
-                        alt="briefcase" />
-                    <span class="links_name"> Positions</span>
+                    <span class="mdi mdi-wallet-travel links_name"> Cargos</span>
                 </router-link>
-                <span class="tooltips">Positions</span>
+                <span class="tooltips">Cargos</span>
             </li>
             <li>
                 <router-link to="/employee">
-                    <img class="ia" width="20" height="20" src="https://img.icons8.com/color/20/men-age-group-5.png"
-                        alt="men-age-group-5" />
-                    <span class="links_name"> Employee</span>
+                    <span class="mdi mdi-account-tie links_name"> Funcionários</span>
                 </router-link>
-                <span class="tooltips">Employee</span>
+                <span class="tooltips">Funcionários</span>
             </li>
         </ul>
         <div class="profile_content">
             <div class="profile">
                 <div class="profile_details">
-                    <img src="../assets/chirs.jpg" />
+                    <div class="profile-pic ">
+                        <img :src=data.picture />
+                    </div>
                     <div class="name_job">
                         <div class="name">
-                            Chris Alberto
+                            {{ data.name }}
                         </div>
                         <div class="job">
                             Back-end Developer
@@ -83,13 +66,26 @@
 
 
 <script>
-
+import navbar from './navbar.vue'
 export default {
     name: 'sidebar',
-    components: {},
+    components: {
+        navbar,
+    },
+    data() {
+        return {
+            data: {
+                name: '',
+                picture: ''
+            }
+        }
+    },
 
     mounted() {
         const token = localStorage.getItem("token")
+        this.data.name = localStorage.getItem("userName")
+        const picture =
+            this.data.picture = '/images/usersImages/' + localStorage.getItem("userPicture")
 
         if (!token) {
             this.$router.push("/login")
@@ -97,7 +93,7 @@ export default {
     },
     methods: {
         async Off() {
-            await localStorage.clear('token')
+            await localStorage.clear()
         }
     }
 }
@@ -114,10 +110,14 @@ body {
     position: relative;
     min-height: 100vh;
     width: 100%;
+
     overflow: hidden;
 }
 
 .sidebar {
+    padding: 0;
+    margin: 0;
+    /* background-image: url('../assets/img2.jpg') no-repeat; */
     position: fixed;
     top: 0;
     left: 0;
@@ -295,17 +295,19 @@ body {
     border-radius: 20px;
 }
 
-/* .home_content {
-    position: absolute;
-    height: 100%;
-    width: calc(100%-240px);
-    left: 240px;
+.profile-pic {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.home_content .text {
-    font-size: 25px;
-    font-weight: 500;
-    color: #1d1b31;
-    margin: 12px;
-} */
+.profile-pic img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
 </style>

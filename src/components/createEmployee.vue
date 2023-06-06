@@ -1,9 +1,74 @@
 <template>
     <sidebar />
-    <div class="container-fluid">
+    <div v-if="!validate == false" class="container-fluid">
         <div class="content_top">
             <div>
                 <h1>Cadastrar funcionário</h1>
+            </div>
+            <div class="form_style">
+                <form @submit="">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                <label>Nome</label>
+                                <input type="text" class="form-control mb-2" placeholder="Digite o seu nome aqui..."
+                                    required v-model="data.name" />
+                            </div>
+                            <div class="form-group">
+                                <label>Morada</label>
+                                <input type="text" class="form-control mb-2" placeholder="Digite a sua morada..." required
+                                    v-model="data.adress" />
+                            </div>
+                            <div class="form-group">
+                                <label>Número</label>
+                                <input type="number" class="form-control mb-2" placeholder="+244 945..." required
+                                    v-model="data.number" />
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control mb-2" placeholder="Digite o seu email aqui..."
+                                    required v-model="data.email" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Enviar foto</label>
+                                <input type="file" class="form-control mb-3" required
+                                    @change="event => data.file = event.target.files[0]" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Cargo</label>
+                                <select class="form-select mb-3">
+                                    <option>Selecionar um cargo</option>
+                                    <option v-for="item in itemsPosition" :value="item.positionId" :key="item.positionId">{{
+                                        item.name }} </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Departamento</label>
+                                <select class="form-select" required>
+                                    <option value="">Seleciona uma opção</option>
+                                    <option v-for="item in itemsDepartament" :value="item.departamentId"
+                                        :key="item.departamentId"> {{ item.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-outline-success btn-lg mt-2">Cadastrar</button>
+                        <router-link class="form-control btn btn-outline-danger btn-lg" to="/employee">Voltar</router-link>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div v-else="validate != false" class="container-fluid">
+        <div class="content_top">
+            <div>
+                <h1>Actualizar funcionário</h1>
             </div>
             <div class="form_style">
                 <form>
@@ -67,11 +132,78 @@
 </template>
 
 <script>
+
 import sidebar from './sidebar.vue';
 export default {
     name: 'createEmployee',
     components: {
         sidebar
+    },
+    data() {
+        return {
+            validate: false,
+            updateId: 0,
+            items: [],
+            itemsPosition: [],
+            itemsDepartament: [],
+            data: {
+                name: '',
+                adress: '',
+                number: 0,
+                email: '',
+                file: null,
+                position: 0,
+                departament: 0
+            }
+        }
+    },
+
+    mounted() {
+        if (localStorage.getItem('updateId')) {
+            this.id = localStorage.getItem('updateId')
+            this.validate = true
+            localStorage.removeItem('updateId')
+            this.fetchData(this.updateId)
+        }
+        this.extraInformation()
+    },
+
+    methods: {
+
+        async extraInformation() {
+            const config = {
+                headers: {
+                    'x-acess-token': localStorage.getItem('token')
+                }
+            }
+
+            await this.$axios.get('/position/positionGet', config).then(response => {
+                this.itemsPosition = response.data
+            }).catch(error => {
+                console.error(error)
+            })
+
+            await this.$axios.get('/departament/departamentGet', config).then(response => {
+                this.itemsDepartament = response.data
+
+            }).catch(error => {
+                console.error(error)
+            })
+        },
+
+        async fetchData(id) {
+            const config = {
+                headers: {
+                    'x-acess-token': localStorage.getItem('token')
+                }
+            }
+            await this.$axios.get(`/employee/employeeGetId/${id}`, config).
+                then(response => {
+                    this.items = response.data
+                }).catch(error => {
+                    console.error(error)
+                })
+        }
     }
 }
 </script>

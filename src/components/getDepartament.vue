@@ -14,10 +14,10 @@
             <table class="table table-striped table-dark">
                 <thead style="text-align: center;">
                     <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">Ordem</th>
                         <th scope="col">Nome do departamento</th>
                         <th scope="col">Sigla</th>
-                        <th scope="col">Actualizar</th>
+                        <th scope="col">Editar</th>
                         <th scope="col">Eliminar</th>
                     </tr>
                 </thead>
