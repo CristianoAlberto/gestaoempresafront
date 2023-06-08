@@ -50,13 +50,11 @@ export default {
 
                 const token = response.data.token.token
                 const id = response.data.usuario.id
-                const userName = response.data.usuario.nome
-                const picture = response.data.usuario.picture
+
 
                 await localStorage.setItem("token", token)
                 await localStorage.setItem("id", id)
-                await localStorage.setItem("userName", userName)
-                await localStorage.setItem("userPicture", picture)
+
                 if (response) {
                     this.$router.push('/');
                 }

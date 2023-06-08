@@ -155,27 +155,27 @@ export default {
             formData.append('number', this.data.number)
             formData.append('password', this.data.password)
             formData.append('picture', this.data.file)
-            console.log('ola')
-            await this.$axios.post('/user/userCreate', formData, config)
-            // .then(response => {
 
-            //     if (response.data.message.slice(0, 1) == 'E') {
-            //         this.$toast.warning(response.data.message)
-            //         setTimeout(() => {
-            //             this.$toast.clear()
-            //             this.$router.push('/user')
-            //         }, 3000)
-            //     } else {
-            //         this.$toast.success(response.data.message)
-            //         setTimeout(() => {
-            //             this.$toast.clear()
-            //             this.$router.push('/user')
-            //         }, 3000)
-            //     }
-            // })
-            // .catch(error => {
-            //     console.error(error)
-            // });
+            await this.$axios.post('/user/userCreate', formData, config)
+                .then(response => {
+
+                    if (response.data.message.slice(0, 1) == 'E') {
+                        this.$toast.warning(response.data.message)
+                        setTimeout(() => {
+                            this.$toast.clear()
+                            this.$router.push('/user')
+                        }, 3000)
+                    } else {
+                        this.$toast.success(response.data.message)
+                        setTimeout(() => {
+                            this.$toast.clear()
+                            this.$router.push('/user')
+                        }, 3000)
+                    }
+                })
+                .catch(error => {
+                    console.error(error)
+                });
         },
 
         async updateUser() {

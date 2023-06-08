@@ -1,6 +1,6 @@
 <template>
     <sidebar />
-    <div v-if="!validate == false" class="container-fluid">
+    <div v-if="validate == false" class="container-fluid">
         <div class="content_top">
             <div>
                 <h1>Cadastrar funcionário</h1>
@@ -65,7 +65,7 @@
             </div>
         </div>
     </div>
-    <div v-else="validate != false" class="container-fluid">
+    <div v-else="validate == true" class="container-fluid">
         <div class="content_top">
             <div>
                 <h1>Actualizar funcionário</h1>

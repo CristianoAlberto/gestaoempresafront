@@ -83,15 +83,28 @@ export default {
 
     mounted() {
         const token = localStorage.getItem("token")
-        this.data.name = localStorage.getItem("userName")
-        const picture =
-            this.data.picture = '/images/usersImages/' + localStorage.getItem("userPicture")
 
         if (!token) {
             this.$router.push("/login")
         }
+        this.fetchData()
     },
     methods: {
+        async fetchData() {
+            const id = localStorage.getItem("id")
+            const config = {
+                headers: {
+                    'x-acess-token': localStorage.getItem("token")
+                }
+            }
+            this.$axios.get(`/user/userGetId/${id}`, config)
+                .then(response => {
+                    this.data.name = response.data.name
+                    this.data.picture = '/images/usersImages/' + response.data.picture
+                }).catch(error => {
+                    console.error(error)
+                })
+        },
         async Off() {
             await localStorage.clear()
         }

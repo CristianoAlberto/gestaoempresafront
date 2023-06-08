@@ -8,8 +8,7 @@
         </div>
         <div class="botao">
             <div class="">
-                <router-link to="/createPosition"><i
-                        class='bx bx-plus-medical btn btn-outline-primary mb-1'></i></router-link>
+                <router-link to="/createPosition"><i class='mdi mdi-plus btn btn-outline-primary mb-1'></i></router-link>
             </div>
         </div>
         <div class="content_form">
@@ -33,10 +32,11 @@
                         <td>{{ item.base_salary }}</td>
                         <td>{{ item.subsidy }}</td>
                         <td>{{ item.net_salary }}</td>
-                        <td><button @click="updatePosition(item.userId)" class='bx bx-pencil btn btn-warning'></button>
+                        <td><button @click="updatePosition(item.positionId)"
+                                class='mdi mdi-pencil btn btn-warning'></button>
                         </td>
                         <td><button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                @click="softDelete(item.positionId)" class='bx bxs-trash btn btn-danger'></button>
+                                @click="softDelete(item.positionId)" class='mdi mdi-delete btn btn-danger'></button>
                         </td>
                     </tr>
                 </tbody>
@@ -100,48 +100,51 @@ export default {
                 });
         },
 
-        async softDelete() {
-            localStorage.setItem('deletePositionId')
+        async softDelete(id) {
+            localStorage.setItem('deletePositionId', id)
         },
 
         async deletePosition(password) {
             const id = localStorage.getItem('deletePositionId')
 
-            const config = {
-                headers: {
-                    'x-acess-token': localStorage.getItem('token')
-                },
-                params: {
-                    userId: localStorage.getItem("id"),
-                    password
-                }
-            }
-
-            await this.$axios.delete(`position/positionDelete/${id}`, config)
-                .then(response => {
+            await this.$axios.delete(`position/positionDelete/${id}`,
+                {
+                    headers: {
+                        "x-acess-token": localStorage.getItem("token")
+                    },
+                    params: {
+                        userId: localStorage.getItem("id"),
+                        password
+                    }
+                }).then(response => {
                     if (response.data.message.slice(0, 1) == 'p') {
                         this.$toast.error(response.data.message)
                         setTimeout(() => {
-                            this.$toast.clear,
+                            this.$toast.clear(),
                                 location.reload()
-                        }, 3000)
+                        }, 2000)
                     } else if (response.data.message.slice(0, 1) == 'N') {
                         this.$toast.warning(response.data.message)
                         setTimeout(() => {
-                            this.$toast.clear,
+                            this.$toast.clear(),
                                 location.reload()
-                        }, 3000)
+                        }, 2000)
                     } else {
                         this.$toast.success(response.data.message)
                         setTimeout(() => {
-                            this.$toast.clear,
+                            this.$toast.clear(),
                                 location.reload()
-                        }, 3000)
+                        }, 2000)
                     }
 
                 }).catch(error => {
                     console.error(error)
                 })
+        },
+
+        async updatePosition(value) {
+            localStorage.setItem("updatePositionId", value)
+            this.$router.push('/createPosition')
         }
 
     },

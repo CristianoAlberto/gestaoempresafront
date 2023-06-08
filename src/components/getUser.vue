@@ -3,12 +3,13 @@
     <div class="container-fluid">
         <div class="content_top">
             <div>
-                <h2>Lista de usuários</h2>
+
+                <h2> {{ calculo }} Lista de usuários</h2>
             </div>
         </div>
         <div class="botao">
             <div class="">
-                <router-link to="/createUser"><i class='bx bx-plus-medical btn btn-outline-primary mb-1'></i></router-link>
+                <router-link to="/createUser"><i class='mdi mdi-plus btn btn-outline-primary mb-1'></i></router-link>
             </div>
         </div>
         <div class="content_form">
@@ -31,9 +32,9 @@
                         <td>{{ item.name }}</td>
                         <td>{{ item.email }}</td>
                         <td>{{ item.number }}</td>
-                        <td><button @click="updateUser(item.userId)" class='bx bx-pencil btn btn-warning'></button> </td>
+                        <td><button @click="updateUser(item.userId)" class='mdi mdi-pencil btn btn-warning'></button> </td>
                         <td><button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                @click="softDelete(item.userId)" class='bx bxs-trash btn btn-danger'></button>
+                                @click="softDelete(item.userId)" class='mdi mdi-delete btn btn-danger'></button>
                         </td>
                     </tr>
                 </tbody>
@@ -73,13 +74,25 @@ export default {
     data() {
         return {
             items: [],
-            password: ''
+            password: '',
+            data: {
+                listUser: 'tarefas',
+                elementosPorPagina: 10,
+                dadosPaginados: [],
+                paginaActual: 1
+            },
+            calculo: 0
         }
     },
     mounted() {
         this.fetchData()
+        this.totalPaginas()
     },
     methods: {
+        totalPaginas() {
+            this.calculo = Math.ceil(this.data.listUser.length / this.data.elementosPorPagina)
+        },
+
         async fetchData() {
 
             const config = {
@@ -125,7 +138,7 @@ export default {
                         setTimeout(() => {
                             this.$toast.clear()
                             location.reload()
-                        }, 3000)
+                        }, 1000)
                     }).catch(error => {
                         console.log(error)
                     })
