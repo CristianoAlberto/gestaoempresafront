@@ -60,7 +60,28 @@
                 <div class="modal-footer">
                     <button type="button" @click="updateEmployee(itemsMoreInformation.id)"
                         class="btn btn-primary">Editar</button>
-                    <button type="submit" @click="deletePosition(password)" class="btn btn-danger">Eliminar</button>
+                    <button type="submit" @click="softDelete(itemsMoreInformation.id)" data-bs-toggle="modal"
+                        data-bs-target="#deleteModal" class="btn btn-danger">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Eliminando usuário</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label>Por favor insira a sua senha para poder eliminar!!!</label>
+                    <input type="password" v-model="password" class="form-control"
+                        placeholder="Digite a sua senha aqui..." />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                    <button type="submit" @click="deleteEmployee(password)" class="btn btn-danger">Eliminar</button>
                 </div>
             </div>
         </div>
@@ -92,7 +113,8 @@ export default {
                 positionId: '',
                 departamentId: '',
                 picture: ''
-            }
+            },
+            password: ''
         };
     },
     mounted() {
@@ -170,8 +192,51 @@ export default {
         },
 
         async updateEmployee(value) {
-            localStorage.setItem('updateId', value)
+            localStorage.setItem('updateEmployeeId', value)
+            const closeButton = document.querySelector('[data-bs-dismiss="modal"]');
+            closeButton.click();
             this.$router.push('/createEmployee')
+        },
+
+        async softDelete(id) {
+            localStorage.setItem('deleteEmployeeId', id)
+        },
+
+        async deleteEmployee(password) {
+            const id = localStorage.getItem('deleteEmployeeId')
+
+            await this.$axios.delete(`/employee/employeeDelete/${id}`,
+                {
+                    headers: {
+                        "x-acess-token": localStorage.getItem("token")
+                    },
+                    params: {
+                        userId: localStorage.getItem("id"),
+                        password
+                    }
+                }).then(response => {
+                    if (response.data.message.slice(0, 1) == 'p') {
+                        this.$toast.error(response.data.message)
+                        setTimeout(() => {
+                            this.$toast.clear(),
+                                location.reload()
+                        }, 2000)
+                    } else if (response.data.message.slice(0, 1) == 'N') {
+                        this.$toast.warning(response.data.message)
+                        setTimeout(() => {
+                            this.$toast.clear(),
+                                location.reload()
+                        }, 2000)
+                    } else {
+                        this.$toast.success(response.data.message)
+                        setTimeout(() => {
+                            this.$toast.clear(),
+                                location.reload()
+                        }, 2000)
+                    }
+                }).catch(error => {
+                    console.log(error)
+                })
         }
     },
 
@@ -183,9 +248,13 @@ label {
     font-weight: bold;
 }
 
+
+
 .picture {
-    height: 20%;
-    width: auto;
+    max-height: 20%;
+    min-height: 20%;
+    max-width: auto;
+    min-width: auto;
     aspect-ratio: 1;
 }
 
