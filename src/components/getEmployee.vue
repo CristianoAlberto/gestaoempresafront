@@ -14,7 +14,7 @@
             </div>
 
             <div class="row ">
-                <div v-for="(item, i) in items " :key="i" class="col-md-4 mb-2">
+                <div v-for="(item, i) in data.dadosPaginados " :key="i" class="col-md-4 mb-2">
                     <div class="card">
                         <img :src="'images/employeesImages/' + item.picture" class="card-img-top picture" alt="...">
                         <div class="card-body">
@@ -29,6 +29,22 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div style="margin-left: 30%;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" v-on:click="getPreviousPage()"><a class="page-link"
+                                href="/#/employee">Previous</a>
+                        </li>
+                        <li v-for="pagina in totalPaginas()" v-bind:class="isActive(pagina)"
+                            v-on:click="getDataPagina(pagina)" class="page-item"><a class="page-link" href="/#/employee">{{
+                                pagina
+                            }}</a>
+                        </li>
+                        <li class="page-item" v-on:click="getNextPage()"><a class="page-link" href="/#/employee">Next</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -114,6 +130,11 @@ export default {
                 departamentId: '',
                 picture: ''
             },
+            data: {
+                elementosPorPagina: 3,
+                dadosPaginados: [],
+                paginaActual: 1
+            },
             password: ''
         };
     },
@@ -122,6 +143,37 @@ export default {
     },
 
     methods: {
+
+
+        totalPaginas() {
+            return Math.ceil(this.items.length / this.data.elementosPorPagina)
+        },
+
+        getDataPagina(noPagina) {
+            this.data.paginaActual = noPagina
+            this.data.dadosPaginados = []
+            let ini = (noPagina * this.data.elementosPorPagina) - this.data.elementosPorPagina
+            let fin = (noPagina * this.data.elementosPorPagina)
+            this.data.dadosPaginados = this.items.slice(ini, fin)
+        },
+
+        getPreviousPage() {
+            if (this.data.paginaActual > 1) {
+                this.data.paginaActual--
+            }
+            this.getDataPagina(this.data.paginaActual)
+        },
+
+        getNextPage() {
+            if (this.data.paginaActual < this.totalPaginas()) {
+                this.data.paginaActual++
+            }
+            this.getDataPagina(this.data.paginaActual)
+        },
+
+        isActive(noPagina) {
+            return noPagina == this.data.paginaActual ? 'active' : ''
+        },
 
         async moreInformation(value, position, departament, employeeId) {
             const config = {
@@ -154,6 +206,7 @@ export default {
             await this.$axios.get('/employee/employeeGet', config)
                 .then(response => {
                     this.items = response.data;
+                    this.getDataPagina(1)
                 })
                 .catch(error => {
                     console.error(error);

@@ -23,8 +23,8 @@
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
-                    <tr v-for="(item, i) in  items " :key="i">
-                        <th>{{ i + 1 }}</th>
+                    <tr v-for="(item, i) in  data.dadosPaginados " :key="i">
+                        <th>{{ (data.paginaActual - 1) * 5 + i + 1 }}</th>
                         <td>{{ item.name }}</td>
                         <td>{{ item.acronym }}</td>
                         <td><button @click="updateDepartament(item.departamentId)"
@@ -36,6 +36,23 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="margin-left: 30%;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" v-on:click="getPreviousPage()"><a class="page-link"
+                                href="/#/departament">Previous</a>
+                        </li>
+                        <li v-for="pagina in totalPaginas()" v-bind:class="isActive(pagina)"
+                            v-on:click="getDataPagina(pagina)" class="page-item"><a class="page-link"
+                                href="/#/departament">{{
+                                    pagina
+                                }}</a>
+                        </li>
+                        <li class="page-item" v-on:click="getNextPage()"><a class="page-link" href="/#/departament">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
     <!-- Modal -->
@@ -73,12 +90,48 @@ export default {
     data() {
         return {
             items: [],
+            data: {
+                elementosPorPagina: 5,
+                dadosPaginados: [],
+                paginaActual: 1
+            },
         }
     },
     mounted() {
         this.fetchData()
     },
     methods: {
+
+        totalPaginas() {
+            return Math.ceil(this.items.length / this.data.elementosPorPagina)
+        },
+
+        getDataPagina(noPagina) {
+            this.data.paginaActual = noPagina
+            this.data.dadosPaginados = []
+            let ini = (noPagina * this.data.elementosPorPagina) - this.data.elementosPorPagina
+            let fin = (noPagina * this.data.elementosPorPagina)
+            this.data.dadosPaginados = this.items.slice(ini, fin)
+        },
+
+        getPreviousPage() {
+            if (this.data.paginaActual > 1) {
+                this.data.paginaActual--
+            }
+            this.getDataPagina(this.data.paginaActual)
+        },
+
+        getNextPage() {
+            if (this.data.paginaActual < this.totalPaginas()) {
+                this.data.paginaActual++
+            }
+            this.getDataPagina(this.data.paginaActual)
+        },
+
+        isActive(noPagina) {
+            return noPagina == this.data.paginaActual ? 'active' : ''
+        },
+
         async fetchData() {
 
             const config = {
@@ -87,8 +140,7 @@ export default {
             await this.$axios.get('/departament/departamentGet', config)
                 .then(response => {
                     this.items = response.data;
-                    console.log(this.items)
-                    console.log('ola')
+                    this.getDataPagina(1)
                 })
                 .catch(error => {
                     console.error(error);

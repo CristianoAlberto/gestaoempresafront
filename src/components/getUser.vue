@@ -26,8 +26,8 @@
                     </tr>
                 </thead>
                 <tbody style="text-align: center;">
-                    <tr v-for="(item, i) in items" :key="i">
-                        <th>{{ i + 1 }}</th>
+                    <tr v-for="(item, i) in data.dadosPaginados" :key="i">
+                        <th>{{ (data.paginaActual - 1) * 5 + i + 1 }}</th>
                         <td><img :src="'images/usersImages/' + item.picture" class="picture" /></td>
                         <td>{{ item.name }}</td>
                         <td>{{ item.email }}</td>
@@ -39,6 +39,21 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="margin-left: 30%;">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" v-on:click="getPreviousPage()"><a class="page-link"
+                                href="/#/user">Previous</a>
+                        </li>
+                        <li v-for="pagina in totalPaginas()" v-bind:class="isActive(pagina)"
+                            v-on:click="getDataPagina(pagina)" class="page-item"><a class="page-link" href="/#/user">{{
+                                pagina
+                            }}</a>
+                        </li>
+                        <li class="page-item" v-on:click="getNextPage()"><a class="page-link" href="/#/user">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
     <!-- Modal -->
@@ -76,21 +91,47 @@ export default {
             items: [],
             password: '',
             data: {
-                listUser: 'tarefas',
-                elementosPorPagina: 10,
+                elementosPorPagina: 5,
                 dadosPaginados: [],
                 paginaActual: 1
             },
-            calculo: 0
         }
     },
+
+
     mounted() {
         this.fetchData()
-        this.totalPaginas()
+
     },
     methods: {
         totalPaginas() {
-            this.calculo = Math.ceil(this.data.listUser.length / this.data.elementosPorPagina)
+            return Math.ceil(this.items.length / this.data.elementosPorPagina)
+        },
+
+        getDataPagina(noPagina) {
+            this.data.paginaActual = noPagina
+            this.data.dadosPaginados = []
+            let ini = (noPagina * this.data.elementosPorPagina) - this.data.elementosPorPagina
+            let fin = (noPagina * this.data.elementosPorPagina)
+            this.data.dadosPaginados = this.items.slice(ini, fin)
+        },
+
+        getPreviousPage() {
+            if (this.data.paginaActual > 1) {
+                this.data.paginaActual--
+            }
+            this.getDataPagina(this.data.paginaActual)
+        },
+
+        getNextPage() {
+            if (this.data.paginaActual < this.totalPaginas()) {
+                this.data.paginaActual++
+            }
+            this.getDataPagina(this.data.paginaActual)
+        },
+
+        isActive(noPagina) {
+            return noPagina == this.data.paginaActual ? 'active' : ''
         },
 
         async fetchData() {
@@ -101,6 +142,7 @@ export default {
             await this.$axios.get('/user/userGet', config)
                 .then(response => {
                     this.items = response.data;
+                    this.getDataPagina(1)
                     console.log(this.items)
                 })
                 .catch(error => {
